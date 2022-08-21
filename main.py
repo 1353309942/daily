@@ -32,8 +32,8 @@ def get_count():
   return delta.days
 
 def get_birthday():
-  birthday= str(date.today().year)+','+birthday
-  lunar_birthday = lunar_date(int(birthday.split(',',3)[0]),int(birthday.split(',',3)[1]),int(birthday.split(',',3)[2]))
+  all_birthday= str(date.today().year)+','+birthday
+  lunar_birthday = lunar_date(int(all_birthday.split(',',3)[0]),int(all_birthday.split(',',3)[1]),int(all_birthday.split(',',3)[2]))
   print(lunar_birthday.to_datetime())
   next = datetime.strptime(str(lunar_birthday.to_datetime()),"%Y-%m-%d %H:%M:%S")
   if next < datetime.now():
