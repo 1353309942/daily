@@ -12,7 +12,8 @@ from zhdate import ZhDate as lunar_date
 today = datetime.now()
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
-birthday = os.environ['BIRTHDAY']
+bn_birthday = os.environ['bn_birthday']
+zj_birthday = os.environ['zj_birthday']
 
 app_id = os.environ["APP_ID"]
 app_secret = os.environ["APP_SECRET"]
@@ -31,7 +32,7 @@ def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
   return delta.days
 
-def get_birthday():
+def get_birthday(birthday):
   all_birthday= str(date.today().year)+','+birthday
   lunar_birthday = lunar_date(int(all_birthday.split(',',3)[0]),int(all_birthday.split(',',3)[1]),int(all_birthday.split(',',3)[2]))
   print(lunar_birthday.to_datetime())
@@ -53,6 +54,6 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"bn_birthday":{"value":get_birthday(zj_birthday)},"zj_birthday":{"value":get_birthday(bn_birthday)},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
