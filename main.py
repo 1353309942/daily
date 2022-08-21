@@ -7,7 +7,7 @@ import os
 import random
 import json
 from zhdate import ZhDate as lunar_date
-import time
+
 
 today = datetime.now()
 start_date = os.environ['START_DATE']
@@ -49,9 +49,8 @@ def get_random_color():
 
 
 client = WeChatClient(app_id, app_secret)
-str_today = datetime.strftime("%Y-%m-%d",datetime.now())
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"today":{"value":json.dumps(str_today, default=str)},"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
