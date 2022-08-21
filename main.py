@@ -49,7 +49,7 @@ def get_random_color():
 
 
 client = WeChatClient(app_id, app_secret)
-str_today = time.strftime("%Y-%m-%d",today)
+str_today = datetime.strftime("%Y-%m-%d",today)
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
 data = {"today":{"value":json.dumps(str_today, default=str)},"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
