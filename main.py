@@ -6,6 +6,7 @@ import requests
 import os
 import random
 import json
+from zhdate import ZhDate as lunar_date
 
 today = datetime.now()
 start_date = os.environ['START_DATE']
@@ -30,7 +31,8 @@ def get_count():
   return delta.days
 
 def get_birthday():
-  next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
+  lunar_birthday = lunar_date(birthday)
+  next = datetime.strptime(str(date.today().year) + "-" + lunar_birthday.to_datetime(), "%Y-%m-%d")
   if next < datetime.now():
     next = next.replace(year=next.year + 1)
   return (next - today).days
@@ -46,9 +48,9 @@ def get_random_color():
 
 
 client = WeChatClient(app_id, app_secret)
-
+str_today = time.strftime("%Y-%m-%d",today)
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"today":{"value":json.dumps(today, default=str)},"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"today":{"value":json.dumps(str_today, default=str)},"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
